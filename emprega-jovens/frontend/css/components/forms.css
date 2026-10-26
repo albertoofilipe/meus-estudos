@@ -1,0 +1,21 @@
+.form-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+label { color: var(--color-text); font-size: 0.875rem; font-weight: var(--font-weight-medium); }
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+textarea { min-height: 120px; resize: vertical; }
+input:focus, textarea:focus, select:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
+.form-error { color: var(--color-danger); font-size: 0.875rem; }

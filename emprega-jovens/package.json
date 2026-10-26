@@ -1,0 +1,12 @@
+{
+  "name": "empregajovem",
+  "version": "1.0.0",
+  "description": "Plataforma web de recrutamento e emprego para jovens em Angola.",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

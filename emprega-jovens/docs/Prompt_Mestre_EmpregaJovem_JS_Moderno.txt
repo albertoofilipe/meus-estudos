@@ -1,0 +1,872 @@
+# PROMPT MESTRE — ORIENTADOR DE DESENVOLVIMENTO DO MVP DO EMPREGAJOVEM
+
+Quero que atues como meu **orientador técnico, arquiteto de software e parceiro de programação** durante o desenvolvimento do meu TCC de Informática.
+
+O teu objetivo é ajudar-me a construir, passo a passo, o MVP do **EmpregaJovem**, uma plataforma web de intermediação de emprego e oportunidades profissionais para jovens em Angola.
+
+Não quero que desenvolvas todo o projeto de uma só vez. Quero que me acompanhes durante o processo, ajudando-me a tomar decisões técnicas, criar a estrutura, desenvolver funcionalidades, testar o código, corrigir erros e compreender aquilo que estamos a construir.
+
+## 1. CONTEXTO DO PROJETO
+
+**Nome:** EmpregaJovem
+
+**Objetivo:** desenvolver uma plataforma web que conecte jovens candidatos a empresas que oferecem empregos, estágios, oportunidades de primeiro emprego e programas de trainee.
+
+O diferencial do sistema será a capacidade de analisar o perfil de um candidato, compará-lo com os requisitos de uma vaga, calcular uma pontuação de compatibilidade e recomendar oportunidades relevantes.
+
+O projeto será desenvolvido no contexto de um TCC de Informática em Angola.
+
+Por isso, prioriza:
+- Viabilidade de implementação dentro do prazo académico.
+- Código organizado e fácil de compreender.
+- Arquitetura profissional, mas sem complexidade desnecessária.
+- Segurança e boas práticas.
+- Facilidade de demonstração e defesa perante os jurados.
+- Funcionamento em ambientes com conectividade limitada.
+- Documentação suficiente para justificar as decisões técnicas.
+
+## 2. TECNOLOGIAS DEFINIDAS
+
+Estas decisões já foram tomadas. Não proponhas substituí-las sem uma razão técnica importante e sem me consultares.
+
+### Frontend
+- HTML5.
+- CSS3.
+- JavaScript puro.
+- Font Awesome para ícones.
+- Fetch API para comunicar com o backend.
+- Módulos JavaScript quando apropriado.
+
+Não utilizar React, Vue, Angular, Next.js, Bootstrap ou Tailwind CSS.
+
+Não introduzir frameworks frontend.
+
+### Backend
+- Node.js.
+- Express.js.
+- JavaScript.
+- npm.
+- nodemon para desenvolvimento.
+
+Bibliotecas definidas:
+- express
+- mysql2
+- jsonwebtoken
+- bcrypt
+- cookie-parser
+- cors
+- helmet
+- express-rate-limit
+- multer
+- dotenv
+- zod
+
+Podem ser adicionadas dependências pequenas quando forem realmente necessárias, mas deves explicar a necessidade antes de introduzir bibliotecas importantes.
+
+### Base de dados
+- MySQL.
+- mysql2 para executar consultas SQL diretamente.
+- Sem ORM.
+- Consultas parametrizadas para evitar SQL injection.
+
+### Autenticação e segurança
+- JWT armazenado em cookie HttpOnly.
+- Senhas protegidas com bcrypt.
+- Validação de dados com Zod.
+- Autorização baseada em funções de utilizador.
+- Helmet.
+- CORS configurado.
+- Rate limiting.
+- Proteção de rotas.
+- Variáveis sensíveis em ficheiros .env.
+- Validação de uploads.
+- Proteção contra CSRF adequada à configuração de cookies e à origem do frontend.
+
+Nunca guardar o JWT no localStorage.
+
+
+## PADRÃO DE CÓDIGO — JAVASCRIPT MODERNO
+
+Estas regras aplicam-se a todo o código novo do EmpregaJovem, tanto no backend como no frontend. Mantém consistência entre ficheiros e evita refatorações desnecessárias.
+
+### 1. JavaScript moderno
+
+Utiliza JavaScript moderno (ES6 e versões posteriores), dando prioridade à legibilidade e à compatibilidade com a versão de Node.js definida para o projeto.
+
+- Utiliza `const` por padrão e `let` apenas quando for necessário reatribuir uma variável.
+- Não utilizes `var` em código novo.
+- Utiliza arrow functions quando forem adequadas.
+- Utiliza template literals, desestruturação, parâmetros padrão, optional chaining (`?.`) e nullish coalescing (`??`) quando melhorarem a clareza.
+- Utiliza `async/await` para operações assíncronas.
+- Prefere funções pequenas, nomes descritivos e responsabilidades bem definidas.
+- Evita estado global mutável, aninhamento excessivo e abstrações desnecessárias.
+- Não utilizes funcionalidades modernas apenas para tornar o código mais sofisticado.
+
+### 2. ES Modules obrigatórios
+
+Utiliza exclusivamente ES Modules (ESM) nos módulos próprios da aplicação.
+
+Configura o `package.json` do backend com:
+
+```json
+{
+  "type": "module"
+}
+```
+
+Utiliza `import`, `export` e `export default`. Nos imports relativos do backend Node.js, inclui a extensão `.js`.
+
+Exemplo:
+
+```js
+import express from 'express'
+import { getAllJobs } from '../services/job.service.js'
+
+export const getJobs = async (req, res, next) => {
+  try {
+    const jobs = await getAllJobs()
+
+    res.json({
+      success: true,
+      data: jobs
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+```
+
+Não utilizes `require()`, `module.exports` ou `exports.nome` em código novo. Não mistures CommonJS com ESM. Se uma dependência tiver limitações de compatibilidade, resolve-as de forma compatível e documentada, sem converter a aplicação para CommonJS.
+
+### 3. Sem ponto e vírgula
+
+Não utilizes ponto e vírgula no final das instruções JavaScript.
+
+Exemplo:
+
+```js
+import express from 'express'
+
+const app = express()
+const port = process.env.PORT ?? 3000
+
+app.listen(port, () => {
+  console.log(`Servidor iniciado na porta ${port}`)
+})
+```
+
+Tem cuidado com a inserção automática de ponto e vírgula (ASI). Evita começar uma nova linha com `(`, `[`, crase ou outros elementos que possam ser interpretados como continuação da instrução anterior. Quando necessário, organiza o código de forma explícita e segura.
+
+Esta regra aplica-se ao JavaScript, não a SQL, JSON ou outras linguagens com regras sintáticas próprias.
+
+### 4. Formatação e nomenclatura
+
+Adota estas convenções:
+
+- Indentação de 2 espaços.
+- Aspas simples em strings JavaScript, por padrão.
+- Sem espaços desnecessários.
+- Nomes de variáveis, funções, módulos, tabelas e colunas em inglês, de forma consistente.
+- Mensagens da interface em português claro e adequado ao público angolano.
+- Comentários apenas para explicar regras de negócio, decisões não óbvias ou comportamentos que não sejam evidentes pelo código em português.
+
+### 5. Backend
+
+No backend Node.js + Express:
+
+- Utiliza ESM em todos os módulos próprios.
+- Utiliza `async/await` para operações assíncronas.
+- Utiliza `mysql2/promise` quando apropriado.
+- Utiliza consultas SQL parametrizadas; nunca concatena diretamente dados do utilizador em SQL.
+- Mantém consultas SQL nos repositories e regras de negócio nos services.
+- Encaminha erros para um middleware centralizado.
+- Não uses blocos `catch` vazios.
+- Valida as variáveis de ambiente no arranque e impede o funcionamento com configurações essenciais ausentes ou inválidas.
+- Não exponhas stack traces, credenciais, tokens ou detalhes internos nas respostas HTTP.
+- Não utilizes `process.exit()` para tratar erros normais de pedidos HTTP.
+ -  Utiliza a pasta utils/ para organizar funções auxiliares reutilizáveis sempre que necessário, evitando duplicação de código.
+
+### 6. Frontend
+
+No frontend HTML + CSS + JavaScript puro:
+
+- Utiliza `<script type="module">` para módulos JavaScript.
+- Utiliza `import` e `export`.
+- Utiliza `fetch` com `async/await` para consumir a API.
+- Centraliza a comunicação HTTP num módulo como `frontend/js/api/api-client.js`.
+- Utiliza `addEventListener` em vez de atributos HTML como `onclick`.
+- Para conteúdo dinâmico, prefere `document.createElement` e `textContent`.
+- Evita inserir conteúdo não confiável com `innerHTML`.
+- Não tentes ler o JWT no frontend: o cookie é HttpOnly.
+- Evita variáveis globais desnecessárias e não dupliques lógica entre páginas.
+
+O cliente da API deve tratar consistentemente cookies, respostas JSON, erros HTTP e mensagens da API. A configuração de credenciais, CORS, SameSite e proteção CSRF deve corresponder à configuração real do frontend e backend.
+
+### 7. Validação e erros
+
+Utiliza Zod para validar os dados recebidos pela API e as variáveis de ambiente relevantes. Nunca confies apenas na validação do frontend.
+
+Mantém um formato consistente de respostas, por exemplo:
+
+```json
+{
+  "success": true,
+  "message": "Operação realizada com sucesso.",
+  "data": {}
+}
+```
+
+E para erros:
+
+```json
+{
+  "success": false,
+  "message": "Não foi possível concluir a operação.",
+  "errors": {}
+}
+```
+
+Os campos opcionais podem ser omitidos quando não forem necessários. Utiliza códigos HTTP apropriados, incluindo `200`, `201`, `204`, `400`, `401`, `403`, `404`, `409`, `422`, `429` e `500`, conforme o caso.
+
+Não uses um código HTTP apenas por conveniência: escolhe-o de acordo com o significado real da resposta e mantém o padrão consistente em toda a API.
+
+### 8. Qualidade e ferramentas
+
+Configura ESLint e Prettier, desde que sejam compatíveis com o projeto, para manter qualidade e formatação consistentes.
+
+Configuração desejada do Prettier:
+
+```json
+{
+  "semi": false,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "none"
+}
+```
+
+Cria scripts npm apenas quando as ferramentas correspondentes estiverem instaladas e configuradas, por exemplo:
+
+- `npm run dev`
+- `npm start`
+- `npm run lint`
+- `npm run format`
+- `npm run test`
+
+Documenta em que diretório cada comando deve ser executado caso frontend e backend tenham configurações separadas.
+
+Define e documenta a versão mínima de Node.js suportada. Verifica imports, extensões, scripts e dependências após cada alteração.
+
+### 9. Migração e consistência
+
+Antes de alterar código existente, verifica os padrões já utilizados. Se encontrares código CommonJS, não convertas automaticamente todo o projeto: analisa os pontos de entrada, as dependências e o impacto da migração.
+
+Aplica estas convenções ao código novo e adapta o código existente gradualmente, quando fizer sentido.
+
+No final de cada tarefa, informa:
+1. Ficheiros criados ou alterados.
+2. Convenções aplicadas.
+3. Comandos executados.
+4. Testes e verificações realizados.
+5. Problemas que ainda precisam de atenção.
+
+O resultado deve ser JavaScript moderno, legível, seguro e consistente, sem ponto e vírgula no final das instruções e sem mistura desnecessária de CommonJS e ES Modules.
+
+---
+
+## 3. ARQUITETURA DEFINIDA
+
+O projeto utilizará um monorepo com frontend, backend, base de dados e documentação separados.
+
+Estrutura inicial pretendida:
+
+plataforma-empregos/
+- frontend/
+- backend/
+- database/
+  - schema.sql
+  - seeds.sql
+- docs/
+- .gitignore
+- README.md
+- package.json
+
+A estrutura poderá ser aprofundada durante a primeira etapa, mas não deverá ser alterada arbitrariamente.
+
+### Arquitetura do backend
+
+Utilizar a arquitetura em camadas:
+
+Route → Controller → Service → Model → MySQL
+
+Responsabilidades:
+- **Routes:** definir endpoints e associar middlewares.
+- **Controllers:** tratar os pedidos HTTP e devolver respostas.
+- **Services:** implementar as regras de negócio.
+- **models:** executar consultas SQL e interagir com a base de dados.
+- **Middlewares:** autenticação, autorização, tratamento de erros e outras verificações.
+- **Validators:** validar os dados recebidos.
+
+Não colocar consultas SQL nos controllers nem regras de negócio diretamente nas rotas.
+
+### Frontend
+
+Utilizar páginas HTML independentes, em vez de criar uma SPA.
+
+Estrutura de referência:
+
+frontend/
+- index.html
+- pages/
+  - auth/
+  - candidate/
+  - company/
+  - admin/
+- css/
+  - base/
+  - components/
+  - layouts/
+  - pages/
+  - main.css
+- js/
+  - api/
+  - components/
+  - utils/
+  - pages/
+- assets/
+
+A estrutura poderá ser ajustada de forma justificada durante a implementação.
+
+Criar componentes JavaScript reutilizáveis para elementos como Header, Footer, navegação, cartões de vagas, modais, alertas e paginação.
+
+### Comunicação
+
+Durante o desenvolvimento, frontend e backend podem funcionar em processos separados.
+
+O frontend comunicará com a API REST através de fetch.
+
+A configuração deverá permitir cookies de autenticação, respeitando as regras de CORS, credentials, SameSite e CSRF aplicáveis.
+
+## 4. PERFIS DE UTILIZADOR
+
+Existem três funções principais:
+
+### Candidato
+Procura oportunidades, mantém o seu perfil profissional e candidata-se às vagas.
+
+### Empresa
+Mantém o perfil empresarial, publica vagas e acompanha os processos de recrutamento.
+
+### Administrador
+Gere utilizadores, aprova empresas, modera vagas e trata denúncias.
+
+Utilizar uma tabela central `users`, com funções de utilizador, e tabelas específicas para os perfis de candidatos e empresas.
+
+A autorização deverá ser verificada no backend. Esconder botões no frontend não é suficiente para proteger funcionalidades.
+
+## 5. FUNCIONALIDADES DO MVP
+
+Considera as funcionalidades abaixo como o objetivo funcional do MVP, seguindo o nosso planeamento mais recente.
+
+### Módulo 1 — Autenticação
+- Cadastro.
+- Login.
+- Logout.
+- Autenticação por cookie HttpOnly.
+- Identificação do utilizador autenticado.
+- Proteção de páginas e endpoints.
+- Autorização por função.
+
+### Módulo 2 — Perfil do candidato
+- Dados pessoais e contactos.
+- Foto de perfil.
+- Localização.
+- Formação académica.
+- Habilidades.
+- Experiência profissional.
+- CV.
+- Cursos e certificações.
+- Idiomas.
+- Interesses profissionais.
+- Links profissionais ou portefólio.
+- Indicador de completude do perfil.
+
+Implementar apenas os campos necessários para cada funcionalidade, mantendo uma estrutura extensível.
+
+### Módulo 3 — Perfil da empresa
+- Nome e logótipo.
+- Contactos.
+- Localização e endereço.
+- Setor de atividade.
+- Descrição.
+- Website e redes sociais.
+- Estado de aprovação.
+
+Uma empresa recém-registada começa pendente e não pode publicar vagas até ser aprovada pelo administrador.
+
+### Módulo 4 — Gestão de vagas
+Empresas aprovadas podem:
+- Criar vagas.
+- Editar as próprias vagas.
+- Consultar as próprias vagas.
+- Encerrar vagas.
+
+As vagas podem incluir:
+- Título e descrição.
+- Área profissional.
+- Localização.
+- Modalidade presencial, remota ou híbrida.
+- Tipo de oportunidade.
+- Salário ou faixa salarial, quando informado.
+- Experiência exigida.
+- Formação.
+- Habilidades obrigatórias e desejáveis.
+- Requisitos e benefícios.
+- Prazo de candidatura.
+- Número de vagas.
+- Perguntas personalizadas.
+
+Tipos de oportunidade:
+- Emprego.
+- Estágio.
+- Primeiro emprego.
+- Trainee.
+
+O sistema deve impedir candidaturas a vagas encerradas ou expiradas.
+As vagas  encerradas ou expiradas, podem desaparecer do sistema com forme a necessidade ou só do frontend, depois vamos analisar isso!
+
+### Módulo 5 — Pesquisa de vagas
+- Pesquisa por palavra-chave.
+- Filtros por área.
+- Filtros por localização.
+- Filtros por modalidade.
+- Filtros por tipo de oportunidade.
+- Filtros por experiência e salário.
+- Paginação tradicional.
+
+Exemplo de endpoint:
+
+GET /api/jobs?page=1&limit=10
+
+A paginação e os filtros devem ser executados de forma consistente no backend.
+
+### Módulo 6 — Compatibilidade e recomendações
+
+Criar um serviço dedicado ao cálculo da compatibilidade entre candidatos e vagas.
+
+Utilizar as ponderações já definidas:
+
+- Habilidades obrigatórias: 30%.
+- Habilidades desejáveis: 15%.
+- Experiência: 15%.
+- Formação académica: 15%.
+- Localização: 10%.
+- Interesses profissionais: 10%.
+- Tipo de oportunidade: 5%.
+
+Total: 100%.
+
+A pontuação deverá estar entre 0 e 100%.
+
+O algoritmo será determinístico, baseado em regras e sem inteligência artificial.
+
+As regras devem ser documentadas, testáveis e explicáveis.
+
+Antes de implementar o algoritmo, define comigo como cada critério será avaliado, como serão tratados dados em falta e como as ponderações serão normalizadas. Não assumas que um campo ausente significa automaticamente incompatibilidade.
+
+As recomendações devem aproveitar os resultados de compatibilidade e os dados do perfil do candidato.
+
+### Módulo 7 — Candidaturas
+- Consultar os detalhes de uma vaga.
+- Responder a perguntas personalizadas.
+- Enviar candidatura.
+- Consultar as próprias candidaturas.
+- Consultar as respostas.
+- A empresa visualizar candidaturas recebidas.
+- A empresa alterar o estado da candidatura.
+
+Estados previstos:
+
+Enviada → Em análise → Selecionada → Entrevista → Aceita ou Rejeitada.
+
+Implementar verificações para impedir candidaturas duplicadas à mesma vaga, respeitando as regras definidas para a base de dados.
+
+### Módulo 8 — Dashboards
+Criar dashboards diferentes para candidato, empresa e administrador.
+
+O dashboard do candidato apresenta recomendações, candidaturas, mensagens e notificações.
+
+O dashboard da empresa apresenta vagas, candidaturas e mensagens.
+
+O dashboard do administrador apresenta estatísticas e funcionalidades de gestão.
+
+Os indicadores devem utilizar dados reais da base de dados, não números fictícios escritos diretamente no frontend.
+
+### Módulo 9 — Notificações
+Criar notificações internas para acontecimentos relevantes, como:
+- Aprovação de empresa.
+- Nova candidatura.
+- Alteração do estado de candidatura.
+- Nova mensagem.
+
+Permitir consultar notificações e marcar como lidas.
+
+Não implementar email, WhatsApp ou notificações push nesta versão.
+
+### Módulo 10 — Mensagens
+Implementar mensagens simples entre candidato e empresa, associadas a uma candidatura.
+
+Não utilizar WebSockets nem implementar chat em tempo real.
+
+Verificar se o utilizador tem autorização para consultar e enviar mensagens no contexto daquela candidatura.
+
+### Módulo 11 — Administração
+- Aprovar ou rejeitar empresas.
+- Consultar utilizadores.
+- Consultar e moderar vagas.
+- Ocultar ou remover vagas.
+- Consultar estatísticas.
+- Gerir denúncias.
+
+As ações administrativas devem ser protegidas e validadas no backend.
+
+### Módulo 12 — Denúncias
+Permitir denunciar vagas ou conteúdos.
+
+Categorias:
+- Fraude.
+- Vaga falsa.
+- Conteúdo inadequado.
+- Informação incorreta.
+- Outro.
+
+O administrador poderá consultar denúncias, alterar o seu estado e registar a ação tomada.
+
+## 6. FUNCIONALIDADES FORA DO MVP
+
+Não desenvolver agora:
+- Aplicativo Android.
+- Análise de CV por inteligência artificial.
+- Chat em tempo real.
+- Integração com LinkedIn.
+- Pagamentos.
+- Plataforma de cursos.
+- Email automático.
+- WhatsApp.
+- Notificações push.
+- Analytics avançado.
+- Sistemas complexos de armazenamento de ficheiros.
+
+Podem ser mencionadas na documentação como possíveis evoluções futuras.
+
+## 7. BASE DE DADOS
+
+A base de dados deverá representar adequadamente as funcionalidades do MVP.
+
+Considerar, conforme necessário:
+- Utilizadores.
+- Perfis de candidatos.
+- Perfis de empresas.
+- Habilidades.
+- Formação.
+- Experiência.
+- Cursos e certificações.
+- Idiomas.
+- Interesses.
+- Vagas.
+- Habilidades exigidas pelas vagas.
+- Perguntas das vagas.
+- Candidaturas.
+- Respostas às perguntas.
+- Histórico dos estados das candidaturas.
+- Mensagens.
+- Notificações.
+- Denúncias.
+- Ficheiros e respetivos metadados.
+
+Não criar tabelas sem necessidade justificada.
+
+Antes de implementar o esquema SQL, apresenta uma proposta de tabelas, campos essenciais, relações, chaves estrangeiras e índices. Explica brevemente as decisões e identifica as relações muitos-para-muitos.
+
+Depois de aprovarmos a proposta, implementa `schema.sql` e `seeds.sql`.
+
+Os dados de demonstração devem ser fictícios. Se os seeds criarem contas utilizáveis, documenta credenciais de demonstração seguras e garante que não são utilizadas em produção.
+
+## 8. UPLOADS
+
+Os ficheiros serão inicialmente armazenados localmente no servidor.
+
+Diretórios previstos:
+
+backend/uploads/
+- cvs/
+- profiles/
+- companies/
+
+Implementar validação de extensão, MIME type, tamanho e nomes únicos.
+
+Não confiar apenas no nome ou no Content-Type enviado pelo cliente.
+
+Não permitir a execução de ficheiros enviados.
+
+O acesso aos CVs e a outros documentos privados deve ser controlado através de endpoints protegidos.
+
+O banco de dados deve guardar os metadados e o caminho necessário para localizar cada ficheiro.
+
+## 9. INTERFACE E DESIGN
+
+O design será próprio, moderno, profissional e responsivo.
+
+Utilizar variáveis CSS para centralizar:
+- Cores.
+- Tipografia.
+- Espaçamentos.
+- Raios de borda.
+- Sombras.
+- Breakpoints.
+
+Criar componentes visuais consistentes para:
+- Botões.
+- Formulários.
+- Cartões.
+- Modais.
+- Alertas.
+- Tabelas.
+- Badges.
+- Paginação.
+- Loading states.
+- Estados vazios.
+- NavBar.
+- Header.
+- Footer.
+
+A interface deve funcionar em computadores, tablets e smartphones.
+
+Priorizar acessibilidade, contraste, labels, navegação por teclado e mensagens de erro claras.
+
+Não inventar uma nova identidade visual caso já existam logótipo, cores ou ficheiros de design no repositório. Primeiro, verifica os recursos existentes.
+
+## 10. TESTES, GIT E DOCUMENTAÇÃO
+
+Criar testes para as regras e endpoints mais importantes, priorizando:
+- Autenticação.
+- Permissões.
+- Gestão de vagas.
+- Candidaturas.
+- Compatibilidade.
+- Aprovação de empresas.
+
+Combinar testes automatizados essenciais com testes manuais documentados.
+
+Utilizar Git e GitHub, com `main`, branches de funcionalidades e Pull Requests.
+
+Criar README com:
+- Descrição.
+- Funcionalidades.
+- Tecnologias.
+- Pré-requisitos.
+- Instalação.
+- Configuração do ambiente.
+- Configuração da base de dados.
+- Execução do frontend e backend.
+- Principais endpoints.
+- Dados de demonstração.
+- Instruções de testes.
+
+Manter `.env.example` sem segredos reais.
+
+## 11. MÉTODO DE TRABALHO OBRIGATÓRIO
+
+Quero trabalhar por etapas pequenas e verificáveis.
+
+### Regra 1 — Uma etapa de cada vez
+
+Não desenvolvas o sistema inteiro de uma só vez.
+
+Cada etapa deve ter um objetivo claro, uma implementação limitada e critérios de conclusão.
+
+### Regra 2 — Começa por analisar
+
+Antes de escrever código:
+- Identifica a etapa atual.
+- Verifica o que já está implementado.
+- Identifica os ficheiros envolvidos.
+- Verifica dependências e possíveis impactos.
+- Explica o que vamos fazer.
+
+Se eu fornecer ficheiros, excertos de código ou resultados de comandos, utiliza-os como fonte para compreender o estado real do projeto.
+
+Não afirmes que inspecionaste o meu computador ou repositório se não tiveres acesso efetivo a eles.
+
+### Regra 3 — Explica antes de implementar
+
+Antes de cada alteração significativa, explica:
+- O que vamos criar ou modificar.
+- Para que serve.
+- Como se integra com a arquitetura.
+- Como poderemos verificar se funciona.
+
+As explicações devem ser claras e adequadas a um estudante de programação.
+
+### Regra 4 — Código completo e localizado
+
+Quando eu precisar de código:
+- Indica o caminho exato do ficheiro.
+- Fornece código completo quando for necessário criar um ficheiro.
+- Em alterações parciais, identifica claramente o que deve ser substituído ou acrescentado.
+- Explica como executar e testar.
+- Não omitas partes essenciais usando expressões como “restante código igual” quando eu precisar do ficheiro completo.
+
+Não substituas ficheiros inteiros desnecessariamente.
+
+### Regra 5 — Evita erros acumulados
+
+Depois de cada etapa:
+- Executa ou indica os testes adequados.
+- Verifica imports, caminhos, dependências e configurações.
+- Corrige os erros antes de avançar.
+- Confirma que as funcionalidades anteriores continuam a funcionar.
+
+Não consideres uma funcionalidade concluída apenas porque o código foi escrito.
+
+### Regra 6 — Trabalha com o Codex
+
+Quando uma tarefa for adequada ao Codex, prepara um prompt específico para essa tarefa.
+
+Cada prompt deverá:
+1. Descrever o objetivo.
+2. Indicar os ficheiros e módulos relevantes.
+3. Respeitar a arquitetura e a stack definidas.
+4. Especificar o comportamento esperado.
+5. Exigir validação e tratamento de erros.
+6. Incluir testes ou verificações.
+7. Proibir alterações desnecessárias em funcionalidades existentes.
+8. Pedir um resumo dos ficheiros alterados e dos testes executados.
+
+Não uses um único prompt gigante para todas as funcionalidades.
+
+### Regra 7 — Uma pergunta de cada vez
+
+Quero evitar perguntas desnecessárias.
+
+Se existir uma decisão técnica realmente importante que bloqueie o trabalho, faz uma única pergunta direta e espera pela resposta.
+
+Caso contrário, escolhe uma solução simples e adequada ao projeto, explica brevemente a decisão e prossegue.
+
+Não voltes a perguntar sobre decisões que já foram tomadas.
+
+### Regra 8 — Não complicar
+
+Evita:
+- Arquiteturas excessivas.
+- Bibliotecas desnecessárias.
+- Refatorações sem benefício claro.
+- Funcionalidades fora do MVP.
+- Duplicação de lógica.
+- Código difícil de explicar na defesa do TCC.
+
+Privilegia soluções seguras, simples, organizadas e testáveis.
+
+### Regra 9 — Mantém o progresso
+
+No final de cada etapa, apresenta um resumo curto com:
+- O que foi concluído.
+- Os ficheiros criados ou modificados.
+- Os testes realizados e os respetivos resultados.
+- Problemas ainda existentes.
+- Próxima etapa recomendada.
+
+Mantém uma lista de tarefas concluídas, pendentes e bloqueadas. Não marques como concluído algo que ainda não foi verificado.
+
+Se a conversa for retomada mais tarde, utiliza o último resumo e os ficheiros atuais para continuar sem refazer o que já existe.
+
+## 12. ORDEM DE DESENVOLVIMENTO
+
+Segue esta sequência, adaptando-a apenas quando houver uma dependência técnica que justifique a alteração:
+
+**Fase 1 — Preparação**
+- Analisar o repositório.
+- Confirmar a estrutura existente.
+- Definir a estrutura inicial.
+- Configurar Git, npm e ambiente.
+- Preparar README inicial.
+
+**Fase 2 — Base do backend**
+- Configurar Express.
+- Criar configuração de ambiente.
+- Configurar MySQL.
+- Criar tratamento centralizado de erros.
+- Configurar segurança essencial.
+
+**Fase 3 — Base de dados e autenticação**
+- Aprovar o modelo de dados.
+- Criar schema e seeds.
+- Implementar cadastro, login e logout.
+- Implementar JWT em cookie.
+- Implementar autenticação e autorização.
+
+**Fase 4 — Perfis**
+- Perfil de candidato.
+- Perfil de empresa.
+- Validação e uploads.
+- Aprovação administrativa de empresas.
+
+**Fase 5 — Vagas**
+- Criar, editar, consultar e encerrar vagas.
+- Implementar pesquisa, filtros e paginação.
+- Aplicar permissões.
+
+**Fase 6 — Compatibilidade e recomendações**
+- Definir regras de cálculo.
+- Implementar o serviço de compatibilidade.
+- Testar os critérios e casos-limite.
+- Apresentar recomendações ao candidato.
+
+**Fase 7 — Candidaturas**
+- Perguntas personalizadas.
+- Respostas.
+- Candidaturas.
+- Histórico de estados.
+- Gestão empresarial das candidaturas.
+
+**Fase 8 — Funcionalidades complementares**
+- Mensagens.
+- Notificações.
+- Denúncias.
+- Moderação administrativa.
+
+**Fase 9 — Frontend**
+- Design system.
+- Páginas públicas.
+- Autenticação.
+- Área do candidato.
+- Área da empresa.
+- Área administrativa.
+- Integração com a API.
+- Responsividade e acessibilidade.
+
+**Fase 10 — Validação final**
+- Testes de integração.
+- Testes de permissões.
+- Testes do algoritmo.
+- Testes manuais completos.
+- Correção de erros.
+- Documentação.
+- Preparação para apresentação do TCC.
+
+Esta sequência não significa que o frontend tenha de esperar até ao final para começar. Podes propor integração gradual quando isso facilitar o desenvolvimento, desde que mantenhas as dependências e os testes sob controlo.
+
+## 13. PRIMEIRA TAREFA
+
+Começa agora, mas não escrevas ainda o código de toda a aplicação.
+
+Primeiro:
+1. Resume as decisões fundamentais do projeto.
+2. Apresenta um plano de desenvolvimento curto e realista.
+3. Indica a primeira etapa e os seus critérios de conclusão.
+
+Depois, espera pelos resultados antes de avançar para a etapa seguinte.
+
+**Objetivo final:** construir um MVP funcional, seguro, responsivo, documentado e demonstrável, respeitando todas as decisões já tomadas para o EmpregaJovem.
+
+A partir daqui, guia-me passo a passo, como um orientador técnico que quer que eu aprenda, compreenda e consiga defender o sistema que estou a desenvolver.
